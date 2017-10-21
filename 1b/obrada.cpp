@@ -90,58 +90,58 @@ void obrada(int sig)
 
 void prekid(int sig)
 {
-	int i = retPriority(sig), x = 0;
-	prekidanje(zabrani);
-    
-	string toPrint = constructXatY("X", i);
-	cout << toPrint << "\n";
+        int i = retPriority(sig), x = 0;
+        prekidanje(zabrani);
         
-	++isWaiting[i];
+        string toPrint = constructXatY("X", i);
+        cout << toPrint << "\n";
         
-    do
-    {
-        x = 0;
+        ++isWaiting[i];
         
-        for(int j = currPriority + 1; j < N; ++j)
-            if(isWaiting[j])
-                x = j;
-            
-        if(x)
+        do
         {
-            --isWaiting[x];
+            x = 0;
             
-            context[x] = currPriority;
-            currPriority = x;
+            for(int j = currPriority + 1; j < N; ++j)
+                if(isWaiting[j])
+                    x = j;
             
-            prekidanje(dozvoli);
-            obrada(x);
-            prekidanje(zabrani);
-            
-            currPriority = context[x];
+            if(x)
+            {
+                --isWaiting[x];
+                
+                context[x] = currPriority;
+                currPriority = x;
+                
+                prekidanje(dozvoli);
+                obrada(x);
+                prekidanje(zabrani);
+                
+                currPriority = context[x];
+            }
         }
-    }
-    while(x);
+        while(x);
 }
 
 int main ()
 {
-    for(int i = 0; i < 5; i++)
-        sigset(sig[i], prekid);
+        for(int i = 0; i < 5; i++)
+                sigset(sig[i], prekid);
         
-    currPriority = 0;
+        currPriority = 0;
  
-    printf("Proces obrade prekida, PID = %d\n\n\n", getpid());
-    printf("GP      P1      P2      P3      P4      P5\n__________________________________________\n");
+        printf("Proces obrade prekida, PID = %d\n\n\n", getpid());
+        printf("GP      P1      P2      P3      P4      P5\n__________________________________________\n");
         
-    for(int i = 1; i < TIMEOUT; i++)
-    {
-        while(currPriority != 0)
-            pause();
-        
-        printf("%2d       -       -       -       -       -\n", i);
-        sleep(1);
-    }
-    
+        for(int i = 1; i < TIMEOUT; i++)
+        {
+            while(currPriority != 0)
+                pause();
+            
+            printf("%2d       -       -       -       -       -\n", i);
+            sleep(1);
+        }
+ 
    printf ("Zavrsio osnovni program\n");
    return 0;
 }

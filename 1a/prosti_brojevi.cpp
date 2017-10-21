@@ -10,14 +10,15 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#define wait_s 1			//Definirajte cekanje prije pocetka
-#define delay_s 1			//Definirajte cekanje izmedju prikaza
+#define wait_s 1
+#define delay_s 1
 
 typedef unsigned long long ull;
 typedef itimerval it;
 
 using namespace std;
 
+ull currPrime = 3;
 ull lastPrime = 2;
 bool p = false;
 
@@ -101,7 +102,7 @@ int main ()
     
     setitimer(ITIMER_REAL, t, NULL);
     
-    for(ull i = lastPrime + 1, limit = (ull)0 - 1; i < limit; i+=2)
+    for(ull i = lastPrime + 1, limit = (ull)0 - 2; i < limit; i+=2)
     {
         if(isPrime(i))
             lastPrime = i;
